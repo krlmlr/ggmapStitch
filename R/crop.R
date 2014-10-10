@@ -4,6 +4,9 @@
 #' as closely as possible.  The bounding box is readjusted to fit pixel
 #' boundaries.
 #'
+#' @param map An object of class \code{ggmap}
+#' @param new_bb A data frame with one row and four columns \code{\{ll|ur\}.\{lat|lon\}}
+#'
 #' @export
 crop_map <- function(map, new_bb) {
   stop("NYI")
