@@ -9,19 +9,12 @@
 #'
 #' @export
 crop_map <- function(map, new_bb) {
-  stop("NYI")
-  new_bb_pix <- ll2pix(map, new_bb)
-  new_bb_pix_ll <- pix2ll(map, new_bb_pix)
-
-  stopifnot(new_bb_pix_ll$ll.lat <= new_bb$ll.lat)
-  stopifnot(new_bb_pix_ll$ur.lat >= new_bb$ur.lat)
-  stopifnot(new_bb_pix_ll$ll.lon <= new_bb$ll.lon)
-  stopifnot(new_bb_pix_ll$ur.lon >= new_bb$ur.lon)
+  aligned <- align_bb_to_pixels(map, new_bb)
 
   structure(
-    map[seq(from = new_bb_pix$ur.y, to = new_bb_pix$ll.y, by = 1),
-        seq(from = new_bb_pix$ll.x, to = new_bb_pix$ur.x, by = 1)],
+    map[seq(from = aligned$pixels$ur.y, to = aligned$pixels$ll.y, by = 1),
+        seq(from = aligned$pixels$ll.x, to = aligned$pixels$ur.x, by = 1)],
     class = class(map),
-    bb = new_bb_pix_ll
+    bb = aligned$corrected
   )
 }
