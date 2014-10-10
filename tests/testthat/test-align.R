@@ -1,8 +1,8 @@
 context("Align")
 
-test_that("Check sanity of transformations", {
-  load("CH07.rda")
+load("CH07.rda")
 
+test_that("Check sanity of transformations", {
   d <- dim(CH07)
   bb <- attr(CH07, "bb")
 
@@ -25,12 +25,11 @@ test_that("Check sanity of transformations", {
   aligned <- align_bb_to_pixels(CH07, bb_new)
   expect_equal(aligned$corrected, bb_new)
   expect_equal(aligned$pixels, bb_pix_new)
+
+  expect_equal(unique(unlist(lapply(aligned$pixels, class))), "integer")
 })
 
-
 test_that("Moving border less than one pixel does not change bounding box", {
-  load("CH07.rda")
-
   d <- dim(CH07)
   bb <- attr(CH07, "bb")
 
@@ -63,4 +62,20 @@ test_that("Moving border less than one pixel does not change bounding box", {
   # Move bottom border almost one pixel to the top
   bb_new <- transform(bb, ll.lat = ll.lat + (1 - epsilon) / d[[1]] * (ur.lat - ll.lat))
   check_unchanged(bb_new)
+})
+
+test_that("Can't enlarge bounding box", {
+  d <- dim(CH07)
+  bb <- attr(CH07, "bb")
+
+  epsilon <- 2 ** -16
+
+  bb_new <- transform(bb, ll.lat = ll.lat - epsilon * (ur.lat - ll.lat))
+  expect_error(align_bb_to_pixels(CH07, bb_new))
+  bb_new <- transform(bb, ur.lat = ur.lat + epsilon * (ur.lat - ll.lat))
+  expect_error(align_bb_to_pixels(CH07, bb_new))
+  bb_new <- transform(bb, ll.lon = ll.lon - epsilon * (ur.lon - ll.lon))
+  expect_error(align_bb_to_pixels(CH07, bb_new))
+  bb_new <- transform(bb, ur.lon = ur.lon + epsilon * (ur.lon - ll.lon))
+  expect_error(align_bb_to_pixels(CH07, bb_new))
 })
