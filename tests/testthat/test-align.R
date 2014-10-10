@@ -66,7 +66,7 @@ lapply(
 
       check_unchanged(bb, "Identity")
 
-      epsilon = 2 ** -16
+      epsilon = 2 ** -4
 
       bb_new <- transform(bb, ll.lon = ll.lon + (1 - epsilon) / d[[2]] * (ur.lon - ll.lon))
       check_unchanged(bb_new, "Move left border almost one pixel to the right")
