@@ -1,7 +1,7 @@
 Encoding: UTF-8
 Package: ggmapStitch
 Title: What the package does (one line)
-Version: 0.0-0.1
+Version: 0.0-0.2
 Authors@R: "Kirill Müller <krlml+r@mailbox.org> [aut, cre]"
 Description: What the package does (one paragraph)
 Depends:
