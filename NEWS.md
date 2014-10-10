@@ -1,3 +1,5 @@
+* Use Mercator projection to compute location of bounding box on raster
+
 v0.0-0.3 (2014-10-10)
 ===
 
