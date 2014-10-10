@@ -1,14 +1,26 @@
-context("Align")
-
 load("CH07.rda")
 
 # Check on a square and a non-square map
-map_list <- list(CH07, crop_map(CH07, data.frame(ll.lat = 45.68, ur.lat = 47.9, ll.lon = 5.79, ur.lon = 10.7)))
+map_list <- list(
+  `square` = CH07,
+  `non-square` = crop_map(CH07, data.frame(ll.lat = 45.68, ur.lat = 47.9, ll.lon = 5.79, ur.lon = 10.7)))
 
 lapply(
-  map_list,
+  names(map_list),
 
-  function(map) {
+  function(map_name) {
+    context(sprintf("Alignment: %s", map_name))
+
+    map <- map_list[[map_name]]
+
+    test_that("Check squareness", {
+      d <- dim(map)
+      if (map_name == "square")
+        expect_that(diff(d), equals(0))
+      else
+        expect_that(diff(d), not(equals(0)))
+    })
+
     test_that("Check sanity of transformations", {
       d <- dim(map)
       bb <- attr(map, "bb")
