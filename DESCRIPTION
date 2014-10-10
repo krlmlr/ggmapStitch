@@ -4,8 +4,11 @@ Title: What the package does (one line)
 Version: 0.0-0
 Authors@R: "Kirill Müller <krlml+r@mailbox.org> [aut, cre]"
 Description: What the package does (one paragraph)
-Depends: R (>= 3.1.1)
-Imports: ggmap
+Depends:
+    R (>= 3.1.1)
+Imports:
+    ggmap
 License: GPL-3
 LazyData: true
-Suggests: testthat
+Suggests:
+    testthat
