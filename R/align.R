@@ -4,8 +4,8 @@ align_bb_to_pixels <- function(map, new_bb) {
   new_bb_pix <- data.frame(
     ll.x = 1 + floor((new_bb$ll.lon - bb$ll.lon) / (bb$ur.lon - bb$ll.lon) * d[[2L]]),
     ll.y = d[[1L]] - floor((new_bb$ll.lat - bb$ll.lat) / (bb$ur.lat - bb$ll.lat) * d[[1L]]),
-    ur.x = floor((new_bb$ur.lon - bb$ll.lon) / (bb$ur.lon - bb$ll.lon) * d[[2L]]),
-    ur.y = d[[1L]] + 1 - floor((new_bb$ur.lat - bb$ll.lat) / (bb$ur.lat - bb$ll.lat) * d[[1L]])
+    ur.x = ceiling((new_bb$ur.lon - bb$ll.lon) / (bb$ur.lon - bb$ll.lon) * d[[2L]]),
+    ur.y = d[[1L]] + 1 - ceiling((new_bb$ur.lat - bb$ll.lat) / (bb$ur.lat - bb$ll.lat) * d[[1L]])
   )
 
   stopifnot(new_bb_pix$ll.x >= 1L)

@@ -1,14 +1,39 @@
 context("Align")
 
 
-test_that("Alignment works correctly", {
+test_that("Moving border less than one pixel does not change bounding box", {
   load("CH07.rda")
 
   d <- dim(CH07)
   bb <- attr(CH07, "bb")
 
+  # Establish comparison base
   bb_pix <- align_bb_to_pixels(CH07, bb)$pixels
   expect_equal(bb_pix, data.frame(ll.x = 1, ll.y = d[[1]], ur.x = d[[2]], ur.y = 1))
 
-  expect_equal(align_bb_to_pixels(CH07, bb)$corrected, bb)
+  check_unchanged <- function(bb_new) {
+    aligned <- align_bb_to_pixels(CH07, bb_new)
+    expect_equal(aligned$pixels, bb_pix)
+    expect_equal(aligned$corrected, bb)
+  }
+
+  check_unchanged(bb)
+
+  epsilon = 2 ** -16
+
+  # Move left border almost one pixel to the right
+  bb_new <- transform(bb, ll.lon = ll.lon + (1 - epsilon) / d[[2]] * (ur.lon - ll.lon))
+  check_unchanged(bb_new)
+
+  # Move right border almost one pixel to the left
+  bb_new <- transform(bb, ur.lon = ur.lon - (1 - epsilon) / d[[2]] * (ur.lon - ll.lon))
+  check_unchanged(bb_new)
+
+  # Move top border almost one pixel to the bottom
+  bb_new <- transform(bb, ur.lat = ur.lat - (1 - epsilon) / d[[1]] * (ur.lat - ll.lat))
+  check_unchanged(bb_new)
+
+  # Move bottom border almost one pixel to the top
+  bb_new <- transform(bb, ll.lat = ll.lat + (1 - epsilon) / d[[1]] * (ur.lat - ll.lat))
+  check_unchanged(bb_new)
 })
