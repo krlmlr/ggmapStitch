@@ -1,6 +1,15 @@
 align_bb_to_pixels <- function(map, new_bb) {
   d <- dim(map)
   bb <- attr(map, "bb")
+
+  if (new_bb$ll.lon > new_bb$ur.lon) {
+    new_bb = transform(new_bb, ll.lon = ur.lon, ur.lon = ll.lon)
+  }
+
+  if (new_bb$ll.lat > new_bb$ur.lat) {
+    new_bb = transform(new_bb, ll.lat = ur.lat, ur.lat = ll.lat)
+  }
+
   new_bb_pix <- data.frame(
     ll.x = 1L + as.integer(floor((new_bb$ll.lon - bb$ll.lon) / (bb$ur.lon - bb$ll.lon) * d[[2L]])),
     ll.y = d[[1L]] - as.integer(floor((new_bb$ll.lat - bb$ll.lat) / (bb$ur.lat - bb$ll.lat) * d[[1L]])),

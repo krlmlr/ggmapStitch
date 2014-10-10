@@ -29,7 +29,7 @@ test_that("Check sanity of transformations", {
   expect_equal(unique(unlist(lapply(aligned$pixels, class))), "integer")
 })
 
-test_that("Moving border less than one pixel does not change bounding box", {
+test_that("Moving border less than one pixel does not change bounding box; can mirror bounding box", {
   d <- dim(CH07)
   bb <- attr(CH07, "bb")
 
@@ -61,6 +61,14 @@ test_that("Moving border less than one pixel does not change bounding box", {
 
   # Move bottom border almost one pixel to the top
   bb_new <- transform(bb, ll.lat = ll.lat + (1 - epsilon) / d[[1]] * (ur.lat - ll.lat))
+  check_unchanged(bb_new)
+
+  # Can mirror horizontally
+  bb_new <- transform(bb, ll.lat = ur.lat, ur.lat = ll.lat)
+  check_unchanged(bb_new)
+
+  # Can mirror vertically
+  bb_new <- transform(bb, ll.lon = ur.lon, ur.lon = ll.lon)
   check_unchanged(bb_new)
 })
 
