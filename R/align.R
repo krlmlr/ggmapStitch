@@ -1,5 +1,4 @@
-#@ export
-align_bb_to_pixels <- function(map, bb) {
+align_bb_to_pixels <- function(map, new_bb) {
   d <- dim(map)
   bb <- attr(map, "bb")
   new_bb_pix <- data.frame(
