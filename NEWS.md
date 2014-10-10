@@ -1,3 +1,5 @@
+* Revert "fix cropping" -- the orientation of a raster is indeed top->bottom (matrix)
+
 v0.0-0.2 (2014-10-10)
 ===
 
