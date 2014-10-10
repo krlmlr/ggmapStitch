@@ -64,13 +64,17 @@ align_bb_to_pixels <- function(map, new_bb) {
     floor(new_bb_pix_v[c(LLX,URY)]),
     ceiling(new_bb_pix_v[c(URX,LLY)]))[c(1L,3L,4L,2L)])
 
-  optim_res <- optim(
-    new_bb_vec,
-    function(x) sum(abs(get_pixels(map, x) - new_bb_pix_v_int) ** 2),
-    method = "BFGS")
+  TOL <- 1e-9
+  CHECK_TOL <- TOL * 1000
 
-  new_bb_vec_int <- optim_res$par
-  if (optim_res$convergence > 0) {
+  root_res <- rootSolve::multiroot(
+    function(x) get_pixels(map, x) - new_bb_pix_v_int,
+    new_bb_vec,
+    rtol = TOL
+  )
+
+  new_bb_vec_int <- root_res$root
+  if (root_res$estim.precis > CHECK_TOL) {
     warning("Could not compute bounding box that aligns at pixel boundaries. Map can appear slightly distorted.")
     new_bb_vec_int <- new_bb_vec
   }

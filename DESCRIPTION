@@ -9,7 +9,8 @@ Depends:
 Imports:
     ggmap,
     mapproj,
-    scales
+    scales,
+    rootSolve
 License: GPL-3
 LazyData: true
 Suggests:
