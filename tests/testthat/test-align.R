@@ -36,17 +36,9 @@ lapply(
         ll.lon = ll.lon + 0.25 * (ur.lon - ll.lon),
         ur.lon = ll.lon + 0.75 * (ur.lon - ll.lon))
 
-      bb_pix_new <- data.frame(
-        ll.x = d[[2]] / 4 + 1,
-        ll.y = d[[1]] * 3 / 4,
-        ur.x = d[[2]] * 3 / 4,
-        ur.y = d[[1]] / 4 + 1
-      )
-
       aligned <- align_bb_to_pixels(map, bb_new)
-      expect_equal(aligned$corrected, bb_new)
-      expect_equal(aligned$pixels, bb_pix_new)
 
+      expect_less_than(max(abs(bb_to_vector(bb_new) - bb_to_vector(aligned$corrected))), 0.02)
       expect_equal(unique(unlist(lapply(aligned$pixels, class))), "integer")
     })
 
