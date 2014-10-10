@@ -31,15 +31,15 @@ lapply(
       bb_new <- transform(
         bb,
         ll.lat = ll.lat + 0.25 * (ur.lat - ll.lat),
-        ur.lat = ll.lat + 0.75 * (ur.lat - ll.lat),
+        ur.lat = ll.lat + 0.5  * (ur.lat - ll.lat),
         ll.lon = ll.lon + 0.25 * (ur.lon - ll.lon),
-        ur.lon = ll.lon + 0.75 * (ur.lon - ll.lon))
+        ur.lon = ll.lon + 0.5  * (ur.lon - ll.lon))
 
       bb_pix_new <- data.frame(
-        ll.x = d[[2]] / 4 + 1,
-        ll.y = d[[1]] * 3 / 4,
-        ur.x = d[[2]] * 3 / 4,
-        ur.y = d[[1]] / 4 + 1
+        ll.x = d[[2]]     / 4 + 1,
+        ll.y = d[[1]]     / 4 + 1,
+        ur.x = d[[2]] * 2 / 4,
+        ur.y = d[[1]] * 2 / 4
       )
 
       aligned <- align_bb_to_pixels(map, bb_new)
@@ -55,7 +55,7 @@ lapply(
 
       # Establish comparison base
       bb_pix <- align_bb_to_pixels(map, bb)$pixels
-      expect_equal(bb_pix, data.frame(ll.x = 1, ll.y = d[[1]], ur.x = d[[2]], ur.y = 1))
+      expect_equal(bb_pix, data.frame(ll.x = 1, ll.y = 1, ur.x = d[[2]], ur.y = d[[1]]))
 
       check_unchanged <- function(bb_new) {
         aligned <- align_bb_to_pixels(map, bb_new)

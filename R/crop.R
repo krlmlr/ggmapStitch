@@ -12,7 +12,7 @@ crop_map <- function(map, new_bb) {
   aligned <- align_bb_to_pixels(map, new_bb)
 
   structure(
-    map[seq(from = aligned$pixels$ur.y, to = aligned$pixels$ll.y, by = 1),
+    map[seq(from = aligned$pixels$ll.y, to = aligned$pixels$ur.y, by = 1),
         seq(from = aligned$pixels$ll.x, to = aligned$pixels$ur.x, by = 1)],
     class = class(map),
     bb = aligned$corrected
