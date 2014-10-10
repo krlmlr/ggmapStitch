@@ -1,5 +1,32 @@
 context("Align")
 
+test_that("Check sanity of transformations", {
+  load("CH07.rda")
+
+  d <- dim(CH07)
+  bb <- attr(CH07, "bb")
+
+  expect_equal(d %% 4, c(0, 0))
+
+  bb_new <- transform(
+    bb,
+    ll.lat = ll.lat + 0.25 * (ur.lat - ll.lat),
+    ur.lat = ll.lat + 0.75 * (ur.lat - ll.lat),
+    ll.lon = ll.lon + 0.25 * (ur.lon - ll.lon),
+    ur.lon = ll.lon + 0.75 * (ur.lon - ll.lon))
+
+  bb_pix_new <- data.frame(
+    ll.x = d[[2]] / 4 + 1,
+    ll.y = d[[1]] * 3 / 4,
+    ur.x = d[[2]] * 3 / 4,
+    ur.y = d[[1]] / 4 + 1
+  )
+
+  aligned <- align_bb_to_pixels(CH07, bb_new)
+  expect_equal(aligned$corrected, bb_new)
+  expect_equal(aligned$pixels, bb_pix_new)
+})
+
 
 test_that("Moving border less than one pixel does not change bounding box", {
   load("CH07.rda")
