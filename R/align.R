@@ -42,9 +42,7 @@ get_pixels <- function(map, new_bb) {
   c(new_bb_pix_x, new_bb_pix_y)
 }
 
-align_bb_to_pixels <- function(map, new_bb) {
-  d <- dim(map)
-
+normalize_bb <- function(new_bb) {
   if (new_bb$ll.lon > new_bb$ur.lon) {
     new_bb = transform(new_bb, ll.lon = ur.lon, ur.lon = ll.lon)
   }
@@ -52,6 +50,14 @@ align_bb_to_pixels <- function(map, new_bb) {
   if (new_bb$ll.lat > new_bb$ur.lat) {
     new_bb = transform(new_bb, ll.lat = ur.lat, ur.lat = ll.lat)
   }
+
+  new_bb
+}
+
+align_bb_to_pixels <- function(map, new_bb) {
+  d <- dim(map)
+
+  new_bb <- normalize_bb(new_bb)
 
   new_bb_vec <- bb_to_vector(new_bb)
 
