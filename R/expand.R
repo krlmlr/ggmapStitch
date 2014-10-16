@@ -1,3 +1,6 @@
+LON_RANGE <- c(-180, 180)
+LAT_RANGE <- c(-80, 80)
+
 #' Compute a query set to obtain tiles that cover a given bounding box
 #'
 #' This function assumes that \code{bb} is the bounding box that results from
@@ -19,8 +22,8 @@ expand_bb <- function(bb, new_bb, stepwidth = 0.9) {
   bb_v <- bb_to_vector(bb)
   new_bb_v <- bb_to_vector(new_bb)
   proj_frame <- data.frame(
-    x = c(bb_v[X], new_bb_v[X]),
-    y = c(bb_v[Y], new_bb_v[Y])
+    x = c(bb_v[X], new_bb_v[X], LON_RANGE),
+    y = c(bb_v[Y], new_bb_v[Y], LAT_RANGE)
   )
 
   proj_results <- mapproj::mapproject(proj_frame$x, proj_frame$y, "mercator")
@@ -33,23 +36,23 @@ expand_bb <- function(bb, new_bb, stepwidth = 0.9) {
   kyl <- ceiling((y[[1L]] - y[[3L]]) / stepwidth / (y[[2L]] - y[[1L]]))
   kyr <- ceiling((y[[4L]] - y[[2L]]) / stepwidth / (y[[2L]] - y[[1L]]))
 
-  stopifnot(kxl > 0)
-  stopifnot(kxr > 0)
-  stopifnot(kyl > 0)
-  stopifnot(kyr > 0)
+  stopifnot(kxl >= 0)
+  stopifnot(kxr >= 0)
+  stopifnot(kyl >= 0)
+  stopifnot(kyr >= 0)
 
-  kx <- seq.int(-kxl, kxr, by = 1L)
-  ky <- seq.int(-kyl, kyr, by = 1L)
+  kx <- seq(-kxl, kxr, by = 1)
+  ky <- seq(-kyl, kyr, by = 1)
 
-  sx = x[[1L]] + (kx + 0.5) * stepwidth * (x[[2L]] - x[[1L]])
-  sy = y[[1L]] + (ky + 0.5) * stepwidth * (y[[2L]] - y[[1L]])
+  sx = x[[1L]] + (kx * stepwidth + 0.5) * (x[[2L]] - x[[1L]])
+  sy = y[[1L]] + (ky * stepwidth + 0.5) * (y[[2L]] - y[[1L]])
 
-  base_x <- c(new_bb_v[X], mean(bb_v[X]))
-  base_y <- c(new_bb_v[Y], mean(bb_v[Y]))
+  base_x <- c(LON_RANGE, mean(bb_v[X]))
+  base_y <- c(LAT_RANGE, mean(bb_v[Y]))
   map_x <- function(xx)
-    mapproj::mapproject(c(new_bb_v[X], xx), base_y, "mercator")$x[[3L]]
+    mapproj::mapproject(c(LON_RANGE, xx), base_y, "mercator")$x[[3L]]
   map_y <- function(yy)
-    mapproj::mapproject(base_x, c(new_bb_v[Y], yy), "mercator")$y[[3L]]
+    mapproj::mapproject(base_x, c(LAT_RANGE, yy), "mercator")$y[[3L]]
 
   revmap_x <- function(x) {
     force(x)
