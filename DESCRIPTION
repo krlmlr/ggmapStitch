@@ -10,7 +10,8 @@ Imports:
     ggmap,
     mapproj,
     scales,
-    rootSolve
+    rootSolve,
+    plyr
 License: GPL-3
 LazyData: true
 Suggests:
