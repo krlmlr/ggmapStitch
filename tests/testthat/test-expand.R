@@ -31,6 +31,10 @@ lapply(
       ulon <- unique(g$lon)
       ulat <- unique(g$lat)
 
+      # kx/ky and x/y correspond
+      expect_equal(unique(diff(with(g, kx - x))), 0)
+      expect_equal(unique(diff(with(g, ky - y))), 0)
+
       # kx/ky and lon/lat correspond
       expect_equal(unique(g[c("kx", "lon")])$kx, unique(g$kx))
       expect_equal(unique(g[c("kx", "lon")])$lon, ulon)

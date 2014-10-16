@@ -68,7 +68,7 @@ expand_bb <- function(bb, new_bb, stepwidth = 0.9) {
   lats <- vapply(sy, revmap_y, numeric(1))
 
   g <- expand.grid(x = seq_along(lons), y = seq_along(lats))
-  g <- transform(g, kx = kx[x], ky = ky[y], lon = lons[x], lat = lats[y], x = NULL, y = NULL)
+  g <- transform(g, kx = kx[x], ky = ky[y], lon = lons[x], lat = lats[y])
   g
 
 #   with(proj_results, kxl >= (x[[1]] - x[[3]]) / stepwidth / (x[[2]] - x[[1]]))
