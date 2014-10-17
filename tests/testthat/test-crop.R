@@ -15,6 +15,14 @@ lapply(
 
     map <- map_list[[map_name]]
 
+    test_that("Check squareness", {
+      d <- dim(map)
+      if (map_name == "square")
+        expect_that(diff(d), equals(0))
+      else
+        expect_that(diff(d), not(equals(0)))
+    })
+
     test_that("Cropping is transitive", {
       bb <- attr(map, "bb")
 
