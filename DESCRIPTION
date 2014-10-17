@@ -1,9 +1,12 @@
 Encoding: UTF-8
 Package: ggmapStitch
-Title: What the package does (one line)
+Title: Arbitrarily large maps with ggmap
 Version: 0.0-0.4
 Authors@R: "Kirill Müller <krlml+r@mailbox.org> [aut, cre]"
-Description: What the package does (one paragraph)
+Description: The ggmap package offers downloading map tiles from a variety of
+    providers, but (at least for Google Maps) the maps are restricted to a
+    maximum size.  This package removes this restriction by providing a
+    function to construct maps for given bounding box and zoom level.
 Depends:
     R (>= 3.1.1)
 Imports:
